@@ -31,7 +31,16 @@
          </div>
        </div>
        </div> 
-
+  <div class="repo-list__container">
+       <div class="repo-list" v-for="repo in repos" :key="repo.id">
+         <h2>{{repo.name}}</h2>
+         <p>{{repo.description}}</p>
+        <div class="icon-item">
+           <img src="../assets/star.png" alt="">
+           <p>{{repo.stargazers_count}}</p>
+         </div>
+       </div> 
+  </div>
 
   </div>
 </template>
@@ -41,27 +50,27 @@
 import axios from 'axios'
 
 export default {
-  name:'Profile',
+
   props: ['user', 'github'],
   data(){
     return {
       repos: [],
-      allStars: []
+      allStars: [],
+      sumStars: 0
     }
   },
   mounted(){
     const { url, client_id, client_secret, count, sort } = this.github 
 
       for(var i = 0; i < (this.user.public_repos/30); i++ ){
-      // axios.get(
-      // `${url}/${this.user.login}/repos?cliente_id=${client_id}&client_secret=${client_secret}?page=${i}`
-      // ).then(({data})=>{this.repos.push(data)
-      // console.log(this.repos)
-      // // this.repos.map(repo=> console.log(repo.id))
-      //   })
-
-      console.log(i)
+      axios.get(
+      `${url}/${this.user.login}/repos?cliente_id=${client_id}&client_secret=${client_secret}?page=${i}`
+      ).then(({data})=> {
+        this.repos = (data)
+      })
         }
+        
+        console.log(this.repos)
 
   },
   methods:{
@@ -81,6 +90,12 @@ h2{
 p{
   color:#757575;
 
+}
+.repo-list__container{
+  padding: 0 20px;
+}
+.repo-list{
+  margin: 10px
 }
 .profile__container{
   display: flex;
