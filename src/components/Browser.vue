@@ -1,24 +1,35 @@
 <template>
-  <div class="container">
+  <div class="container"  @keyup="handleEnter">
     <div class="search__container">
-      <div class="form__container column-direction">
+      <div class="form__container" v-bind:class="{'column-direction': coll, 'row-direction': row}">
         <div class="form__content">
           <h1>Github </h1>
           <span>Search</span>
         </div>
        <div class="input__container">
-        <input @keyup="getUser" type="text">
-        <a href="#" class="button-search"> 
+        <input v-model="userInput" type="text" v-bind:placeholder="user.login">
+        <a href="#" v-on:click.prevent="()=>{
+          
+          loaded = false
+          getUser(userInput)
+          this.getRepos(userInput)
+          userInputValidator = ''
+          }
+        " class="button-search"> 
 
-          <img src="../assets/search.png"  alt="">
+          <img src="../assets/search.png" alt="">
 
          </a>
        </div>
       </div>
     </div>
-  <div class="profile__place" >
-    <Profile :user="user" />
-  </div>
+  <div class="profile__place">
+    <Profile :user="user" :github="github"
+    v-if="userInputValidator == '' && loaded == true"
+     />
+
+  <h2 v-else >{{userInputValidator}}</h2>
+</div>
   </div>
 </template>
 
@@ -42,23 +53,50 @@ export default {
         sort:'created: asc'
       },
       user: [],
-      repos: []
+      repos: [],
+      userInput: '',
+      userInputValidator: '',
+      coll: true,
+      row: false,
+      loaded: true
+
     }
   },
   methods: {
-    getUser(e){
-      const user = e.target.value
-      const { url, client_id, client_secret, count, sort } = this.github 
+    chagenClass(){
+      this.coll = false
 
-      axios.get(
-      `${url}/${user}?cliente_id=${client_id}&client_secret=${client_secret}`
-      ).then(({data})=> this.user = data)
-
+    },
+    handleEnter(e){
+      if (e.keyCode === 13) {
+        this.loaded = false          
+        this.getUser(this.userInput)
+        this.userInputValidator = ''
+      }    
+    },
+    getUser(userLogin){
       
+      const { url, client_id, client_secret, count, sort } = this.github 
+      axios.get(
+      `${url}/${userLogin}?cliente_id=${client_id}&client_secret=${client_secret}`
+      ).then(({data})=> {
+        this.userInput = ''
+        this.coll ? this.coll = false : this.coll = this.coll
+        this.row ? this.row = this.row : this.row = true 
+        this.loaded = true
+        this.user = data
+        })
+        .catch(e => {
+        this.userInputValidator = "Nenhum usuário foi encontrado!"
+        this.coll ? this.coll = this.coll : this.coll = true 
+        this.row ? this.row = false : this.row = this.row
+        this.loaded = false
+
+
+})
+      }
     }
   }
-
-}
 </script>
 
 <style>
@@ -84,7 +122,20 @@ body input, * input {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
+  ::-webkit-input-placeholder {
+    color: #757575;
+  }
+.profile__place{
+  margin: 30px 0
+}
+body{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
 
+  min-height: 100vh;
+}
 body .input__container, * .input__container {
   display: flex;
   width: 700px;
@@ -110,7 +161,7 @@ body .input__container .button-search, * .input__container .button-search {
   appearance: none;
   height: 100%;
   font-size: 24px;
-
+  padding:10px
 }
 
 .button-search{
@@ -135,30 +186,40 @@ body .input__container .button-search, * .input__container .button-search {
       -ms-flex-align: center;
           align-items: center;
   width: 100vw;
-  height: 100vh;
 }
-
+ 
 .form__container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  transition: 2s ease;
+
+
 }
 
 .row-direction{
+
+  display: flex;
+  width: 100vw;
+  padding:  20px;
       -ms-flex-direction: row;
           flex-direction: row;
+          justify-content: space-between;
+          align-items: flex-end;
+border-bottom: 1px solid rgba(0,0,0,.3);
 }
 .column-direction{
--webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  height:120px;
+  flex-direction: column;
+            -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+          justify-content: space-between;
+  transition: 2s ease;
 }
 
 .form__content {
@@ -171,9 +232,9 @@ body .input__container .button-search, * .input__container .button-search {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 473px;
-  height: 76px;
-  margin: 10 auto;
+
+  margin: 10 40px;
+
 }
 
 .form__content h1 {
