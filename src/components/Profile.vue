@@ -19,7 +19,7 @@
          </div>
          <div class="icon-item">
            <img src="../assets/star.png" alt="">
-           <p>{{ allStars }}</p>
+           <p>{{ sumStars }}</p>
          </div>
          <div class="icon-item">
            <img src="../assets/repository.png" alt="">
@@ -55,7 +55,8 @@ export default {
   data(){
     return {
       repos: [],
-      allStars: 0
+      allStars: [],
+      sumStars: 0
     }
   },
   mounted(){
@@ -65,18 +66,19 @@ export default {
       axios.get(
       `${url}/${this.user.login}/repos?per_page=${this.user.public_repos}`
       ).then(({data})=> {
-        this.repos = data
-        this.allStars = data.map(repo=> repo.stargazers_count).reduce((acumulator, item)=> {
+        this.repos = data.sort(function(a, b){
+            return b.stargazers_count - a.stargazers_count
+        })
+        this.allStars = data.map(repo=> repo.stargazers_count).sort().reverse()
+        this.sumStars = data.map(repo=> repo.stargazers_count).reduce((acumulator, item)=> {
              
              return acumulator + item
              }, 0)
       })
-    
-      console.log(this.allStars)
-  },
-  methods:{
-      
   }
+ 
+    
+  
 
 }
 </script>
