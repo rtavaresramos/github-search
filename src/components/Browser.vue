@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="search__container">
-      <div class="form__container">
+      <div class="form__container column-direction">
         <div class="form__content">
           <h1>Github </h1>
           <span>Search</span>
@@ -9,26 +9,35 @@
        <div class="input__container">
         <input @keyup="getUser" type="text">
         <a href="#" class="button-search"> 
-          <!-- <i class="fas fa-search"></i> -->
-          Buscar
+
+          <img src="../assets/search.png"  alt="">
+
          </a>
        </div>
       </div>
     </div>
+  <div class="profile__place" >
+    <Profile :user="user" />
+  </div>
   </div>
 </template>
 
 <script>
+import Profile from './Profile.vue'
+
 import axios from 'axios'
 
 export default {
   name: 'Browser',
+  components:{
+    Profile
+  },
   data(){
     return{
       github: {
         url: 'https://api.github.com/users',
         client_id: '6dd2bb42360aaf81c4a6',
-        cliente_secret: '83f8de88a233a39cf41eed1401b0c734e790f708',
+        cliente_secret: '0ea7c88eb9dc409f0ec90e9a96e55bd11eafc4e1',
         count: 7,
         sort:'created: asc'
       },
@@ -43,7 +52,7 @@ export default {
 
       axios.get(
       `${url}/${user}?cliente_id=${client_id}&client_secret=${client_secret}`
-      ).then(({data})=> console.log(data))
+      ).then(({data})=> this.user = data)
 
       
     }
@@ -77,24 +86,48 @@ body input, * input {
 }
 
 body .input__container, * .input__container {
+  display: flex;
   width: 700px;
   height: 50px;
+
 }
 
 body .input__container .button-search, * .input__container .button-search {
-  margin-left: -10px;
+
   border: none;
   border-bottom: 2px solid #000;
-  padding: 15px;
   color: white;
   background: #000000;
   border-radius: 0px;
+}
+
+.input__container input{
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;  
+  -webkit-appearance: none;
+  appearance: none;
+  height: 100%;
+  font-size: 24px;
+
+}
+
+.button-search{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px
 }
 
 .container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -109,16 +142,23 @@ body .input__container .button-search, * .input__container .button-search {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+.row-direction{
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+.column-direction{
+-webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .form__content {
