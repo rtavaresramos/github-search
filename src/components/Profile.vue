@@ -1,9 +1,9 @@
 <template>
-    <div class="profile__container">
+    <div class="profile__container" v-if="user.length != 0">
       
-     <div class="profile-info__container" v-if="user.length != 0">
+     <div class="profile-info__container" >
        <div class="profile-info__container--details">
-         <img id="img-profile" :src="user.avatar_url" alt="">
+         <img id="img-profile" :src="user.avatar_url"  alt="">
          <h2>{{user.name}}</h2>
          <p>{{user.login}}</p>
        </div>
@@ -19,7 +19,7 @@
          </div>
          <div class="icon-item">
            <img src="../assets/star.png" alt="">
-           <p>{{  }}</p>
+           <p>{{ allStars }}</p>
          </div>
          <div class="icon-item">
            <img src="../assets/repository.png" alt="">
@@ -55,26 +55,27 @@ export default {
   data(){
     return {
       repos: [],
-      allStars: [],
-      sumStars: 0
+      allStars: 0
     }
   },
   mounted(){
     const { url, client_id, client_secret, count, sort } = this.github 
 
-      for(var i = 0; i < (this.user.public_repos/30); i++ ){
-      axios.get(
-      `${url}/${this.user.login}/repos?cliente_id=${client_id}&client_secret=${client_secret}?page=${i}`
-      ).then(({data})=> {
-        this.repos = (data)
-      })
-        }
-        
-        console.log(this.repos)
 
+      axios.get(
+      `${url}/${this.user.login}/repos?per_page=${this.user.public_repos}`
+      ).then(({data})=> {
+        this.repos = data
+        this.allStars = data.map(repo=> repo.stargazers_count).reduce((acumulator, item)=> {
+             
+             return acumulator + item
+             }, 0)
+      })
+    
+      console.log(this.allStars)
   },
   methods:{
-
+      
   }
 
 }
