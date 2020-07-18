@@ -2,14 +2,14 @@
 <div>
   <div class="container"  @keyup="handleEnter">
     <div class="search__container">
-      <div class="form__container" v-bind:class="{'column-direction': coll, 'row-direction': row}">
+      <div class="form__container row-direction">
         <div class="form__content">
           <h1>Github </h1>
           <span>Search</span>
         </div>
        <div class="input__container">
         <input v-model="userInput" type="text" v-bind:placeholder="user.login">
-        <router-link to="/result" v-on:click.prevent="()=>{
+        <a href="#" v-on:click.prevent="()=>{
           
           loaded = false
           getUser(userInput)
@@ -20,19 +20,23 @@
 
           <img src="../assets/search.png" alt="">
 
-         </router-link>
+         </a>
        </div>
       </div>
     </div>
   </div>
-  <h2>{{userInputValidator}}</h2>
+    <div class="profile__place">
+    <Profile :user="user" :github="github"
+    v-if="userInputValidator == '' && loaded == true"
+     />
 
+  <h2 v-else >{{userInputValidator}}</h2>
+</div>
 </div>
 </template>
 
 <script>
-import Profile from './Profile.vue'
-import router from '../router'
+import Profile from '../components/Profile.vue'
 
 import axios from 'axios'
 
@@ -61,11 +65,18 @@ export default {
 
     }
   },
+  mounted(){
+    this.userStorage = localStorage.getItem('username')
+        this.loaded = false          
+        this.getUser(this.userStorage)
+        this.userInputValidator = ''
+  },
   methods: {
     handleEnter(e){
       if (e.keyCode === 13) {
-
-        router.push('result')
+        this.loaded = false          
+        this.getUser(this.userInput)
+        this.userInputValidator = ''
       }    
     },
     getUser(userLogin){
