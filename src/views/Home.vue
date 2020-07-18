@@ -1,5 +1,5 @@
 <template>
-  <Browser :searchPosition="colDirection"/>
+  <Browser />
 </template>
 
 <script>

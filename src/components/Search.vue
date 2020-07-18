@@ -1,6 +1,5 @@
 <template>
-<div>
-  <div class="container"  @keyup="handleEnter">
+<div class="container"  @keyup="handleEnter">
     <div class="search__container">
       <div class="form__container column-direction">
         <div class="form__content">
@@ -25,26 +24,12 @@
       </div>
     </div>
   </div>
-    <div class="profile__place">
-      <Profile :user="user" :github="github"
-      v-if="userInputValidator == '' && loaded == true"
-      />
-
-    <h2 v-else >{{userInputValidator}}</h2>
-  </div>
-</div>
 </template>
 
 <script>
-import Profile from './Profile.vue'
-
-import axios from 'axios'
-
 export default {
-  name: 'Browser',
-  components:{
-    Profile
-  },
+  name: 'Search',
+
   data(){
     return{
       github: {
@@ -80,26 +65,23 @@ export default {
       `${url}/${userLogin}?cliente_id=${client_id}&client_secret=${client_secret}`
       ).then(({data})=> {
         this.userInput = ''
-        this.coll ? this.coll = false : this.coll = this.coll
-        this.row ? this.row = this.row : this.row = true 
         this.loaded = true
         this.user = data
         localStorage.setItem('username', this.user.login)
         })
         .catch(e => {
-        this.userInputValidator = "Nenhum usuário foi encontrado!"
-        this.coll ? this.coll = this.coll : this.coll = true 
-        this.row ? this.row = false : this.row = this.row
+        localStorage.setItem("Nenhum usuário foi encontrado!",InputValidator )
         this.loaded = false
-        localStorage.clear
+        localStorage.removeItem('username')
 
         })
       }
     }
-  }
+
+}
 </script>
 
-<style>
+<style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 body, * {
   font-family: 'Roboto', sans-serif;
