@@ -11,11 +11,11 @@
        <div class="profile-info__container--icon-group">
          <div class="icon-item">
            <img src="../assets/company.png" alt="">
-           <p>{{user.company}}</p>
+           <p>{{user.company == null ? ' - ' : user.company }}</p>
          </div>
          <div class="icon-item">
            <img src="../assets/location.png" alt="">
-           <p>{{user.location}}</p>
+           <p>{{user.location == null ? ' - ' : user.location }}</p>
          </div>
          <div class="icon-item">
            <img src="../assets/star.png" alt="">
@@ -23,11 +23,11 @@
          </div>
          <div class="icon-item">
            <img src="../assets/repository.png" alt="">
-           <p>{{user.public_repos}}</p>
+           <p>{{user.public_repos == null ? ' - ' : user.public_repos }}</p>
          </div>
          <div class="icon-item">
            <img src="../assets/followers.png" alt="">
-           <p>{{user.followers}}</p>
+           <p>{{user.followers == null ? ' - ' : user.followers }}</p>
          </div>
        </div>
        </div> 
@@ -75,11 +75,20 @@ export default {
              return acumulator + item
              }, 0)
       })
-  }
- 
-    
-  
-
+  },
+    computed: {
+        userInfor(){
+          return this.user.map(user=>({
+            ...user,
+            name: user.name.trim() === '' ? ' - ' : user.name,
+            login:user.login.trim() === '' ? ' - ' : user.login,
+            company:user.company.trim() === '' ? ' - ' : user.company,
+            location:user.location.trim() === '' ? ' - ' : user.location,
+            public_repos:user.public_repos.trim() === '' ? ' - ' : user.public_repos,
+            followers:user.followers.trim() === '' ? ' - ' : user.followers,
+          }))
+        }
+    }
 }
 </script>
 
@@ -87,6 +96,7 @@ export default {
 <style scoped>
 
 h2{
+  text-align: left;
   font-weight: 300;
 }
 

@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="container"  @keyup="handleEnter">
     <div class="search__container">
       <div class="form__container" v-bind:class="{'column-direction': coll, 'row-direction': row}">
@@ -23,14 +24,15 @@
        </div>
       </div>
     </div>
-  <div class="profile__place">
+  </div>
+    <div class="profile__place">
     <Profile :user="user" :github="github"
     v-if="userInputValidator == '' && loaded == true"
      />
 
   <h2 v-else >{{userInputValidator}}</h2>
 </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -53,6 +55,7 @@ export default {
         sort:'created: asc'
       },
       user: [],
+      userStorage:'',
       repos: [],
       userInput: '',
       userInputValidator: '',
@@ -63,10 +66,9 @@ export default {
     }
   },
   methods: {
-    chagenClass(){
-      this.coll = false
-
-    },
+    // chagenClass(){
+    //   this.coll = false
+    // },
     handleEnter(e){
       if (e.keyCode === 13) {
         this.loaded = false          
@@ -85,15 +87,16 @@ export default {
         this.row ? this.row = this.row : this.row = true 
         this.loaded = true
         this.user = data
+        localStorage.setItem('username', this.user.login)
         })
         .catch(e => {
         this.userInputValidator = "Nenhum usuário foi encontrado!"
         this.coll ? this.coll = this.coll : this.coll = true 
         this.row ? this.row = false : this.row = this.row
         this.loaded = false
+        localStorage.clear
 
-
-})
+        })
       }
     }
   }
@@ -191,9 +194,10 @@ body .input__container .button-search, * .input__container .button-search {
 .form__container {
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex;
   justify-content: center;
+  display: none;
   transition: 2s ease;
+  opacity: 0;
 
 
 }
@@ -202,15 +206,19 @@ body .input__container .button-search, * .input__container .button-search {
 
   display: flex;
   width: 100vw;
+
   padding:  20px;
       -ms-flex-direction: row;
           flex-direction: row;
           justify-content: space-between;
           align-items: flex-end;
-border-bottom: 1px solid rgba(0,0,0,.3);
+          opacity: 1;
+
 }
 .column-direction{
   height:120px;
+
+  display: flex;
   flex-direction: column;
             -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -219,6 +227,7 @@ border-bottom: 1px solid rgba(0,0,0,.3);
       -ms-flex-align: center;
       align-items: center;
           justify-content: space-between;
+          opacity: 1;
   transition: 2s ease;
 }
 
@@ -247,5 +256,8 @@ border-bottom: 1px solid rgba(0,0,0,.3);
   font-size: 34px;
   font-style: italic;
   font-weight: 300;
+}
+h2{
+  text-align: center;
 }
 </style>

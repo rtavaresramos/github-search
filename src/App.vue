@@ -35,8 +35,8 @@ export default {
     }
 
 
-    *{
-      animation: fadeIn .5s;
+    body,html,*{
+      animation: fadeIn 1s;
       transition: ease;
     }
 </style>
