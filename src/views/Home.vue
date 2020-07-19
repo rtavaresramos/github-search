@@ -1,5 +1,5 @@
 <template>
-  <Browser />
+  <Browser :row="row" :col="col" />
 </template>
 
 <script>
@@ -12,7 +12,8 @@ export default {
   },
   data(){
     return {
-      colDirection: 'column-direction'
+      col: true,
+      row: false,
     }
   }
 }

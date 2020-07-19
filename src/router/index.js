@@ -14,8 +14,9 @@ Vue.use(VueRouter)
      },
      {
        name: 'result',
-       path:'/result',
-       component: Result
+       path: '/result', 
+       component: Result,
+      //  props: true 
      }
   ]
 })

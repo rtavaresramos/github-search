@@ -39,7 +39,7 @@ export default {
   props:[
     'user',
     'star'
-  ]
+  ],
 }
 </script>
 

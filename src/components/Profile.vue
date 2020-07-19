@@ -1,36 +1,46 @@
 <template>
-<div class="profile__container">
-        <UserInfo :user="user" :star="sumStars" />
-        <Repos :repo="repos" />
+  <div class="profile__container">
+      <UserInfo :user="user" :star="sumStars" />
+      <Repos :repo="repos" />
   </div>
 </template>
 
 
 <script>
-import Repos from './Repos.vue'
 import UserInfo from './UserInfo.vue'
+import Repos from './Repos.vue'
 import axios from 'axios'
 
 export default {
 
-  props: ['user', 'github'],
+  props: [
+    'user',
+    'github'
+    ],
+    
   components:{
     Repos,
     UserInfo
   },
   data(){
     return {
+      user: 'user',
       repos: [],
       allStars: [],
       sumStars: 0
     }
   },
   mounted(){
+    this.getRepos()
+  },
+
+    methods: {
+      getRepos(){
+        
     const { url, client_id, client_secret, count, sort } = this.github 
 
-
       axios.get(
-      `${url}/${this.user.login}/repos?per_page=${this.user.public_repos}`
+      `${url}/${localStorage.getItem('username')}/repos?per_page=${localStorage.getItem('reposAmount')}`
       ).then(({data})=> {
         this.repos = data.sort(function(a, b){
             return b.stargazers_count - a.stargazers_count
@@ -41,7 +51,9 @@ export default {
              return acumulator + item
              }, 0)
       })
-  },
+      }
+      
+    },
     computed: {
         userInfor(){
           return this.user.map(user=>({

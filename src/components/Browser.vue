@@ -2,98 +2,66 @@
 <div>
   <div class="container"  @keyup="handleEnter">
     <div class="search__container">
-      <div class="form__container column-direction">
+      <div class="form__container" v-bind:class="{'column-direction' : col,
+       'row-direction' : row }">
         <div class="form__content">
           <h1>Github </h1>
           <span>Search</span>
         </div>
        <div class="input__container">
-        <input v-model="userInput" type="text" v-bind:placeholder="user.login">
-        <a href="#" v-on:click.prevent="()=>{
-          
-          loaded = false
-          getUser(userInput)
-          this.getRepos(userInput)
-          userInputValidator = ''
-          }
-        " class="button-search"> 
+        <input v-model="userInput" type="text" v-bind:placeholder="userStorage">
+        <a href="/result" v-on:click.prevent="update" class="button-search"> 
 
           <img src="../assets/search.png" alt="">
 
-         </a>
+        </a>
        </div>
       </div>
     </div>
-  </div>
-    <div class="profile__place">
-      <Profile :user="user" :github="github"
-      v-if="userInputValidator == '' && loaded == true"
-      />
-
-    <h2 v-else >{{userInputValidator}}</h2>
   </div>
 </div>
 </template>
 
 <script>
+import router from '../router'
 import Profile from './Profile.vue'
 
 import axios from 'axios'
 
 export default {
+  props:[
+    'row',
+    'col'
+  ],
   name: 'Browser',
   components:{
     Profile
   },
   data(){
     return{
-      github: {
-        url: 'https://api.github.com/users',
-        client_id: '6dd2bb42360aaf81c4a6',
-        cliente_secret: '0ea7c88eb9dc409f0ec90e9a96e55bd11eafc4e1',
-        count: 7,
-        sort:'created: asc'
-      },
-      user: [],
-      userStorage:'',
-      repos: [],
+      userStorage: localStorage.getItem('username'),
       userInput: '',
-      userInputValidator: '',
-      coll: true,
-      row: false,
-      loaded: true
-
+      repos: [],
+      allStars: [],
+      sumStars: 0,
+      isRow: row,
+      isCol: col
     }
   },
   methods: {
+    update: function(){
+      this.setUser(this.userInput)
+      this.$emit('update')
+      router.push('result')
+    },
+
     handleEnter(e){
-      if (e.keyCode === 13) {
-        this.loaded = false          
-        this.getUser(this.userInput)
-        this.userInputValidator = ''
+      if (e.keyCode === 13) {    
+        this.update()
       }    
     },
-    getUser(userLogin){
-      
-      const { url, client_id, client_secret, count, sort } = this.github 
-      axios.get(
-      `${url}/${userLogin}?cliente_id=${client_id}&client_secret=${client_secret}`
-      ).then(({data})=> {
-        this.userInput = ''
-        this.coll ? this.coll = false : this.coll = this.coll
-        this.row ? this.row = this.row : this.row = true 
-        this.loaded = true
-        this.user = data
-        localStorage.setItem('username', this.user.login)
-        })
-        .catch(e => {
-        this.userInputValidator = "Nenhum usuário foi encontrado!"
-        this.coll ? this.coll = this.coll : this.coll = true 
-        this.row ? this.row = false : this.row = this.row
-        this.loaded = false
-        localStorage.clear
-
-        })
+    setUser(userLogin){
+        localStorage.setItem('username', userLogin)
       }
     }
   }
