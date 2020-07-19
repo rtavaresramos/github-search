@@ -1,6 +1,4 @@
 <template>
-
-
   <div class="profile-info__container" v-if="user.length != 0">
        <div class="profile-info__container--details">
          <img id="img-profile" :src="user.avatar_url"  alt="">
@@ -30,8 +28,7 @@
            <p>{{user.followers == null ? ' - ' : user.followers }}</p>
          </div>
        </div>
-       </div>
-
+    </div>
 </template>
 
 <script>
@@ -53,9 +50,7 @@ p{
   color:#757575;
 
 }
-.profile__container{
 
-}
 .profile__info--container{
   display:flex;
   width: 100%;

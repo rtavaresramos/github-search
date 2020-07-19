@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Browser :row="row" :col="col" v-on:update="()=>{
+    <Browser :row="row" :col="col" :inputLabel="placeholder" v-on:update="()=>{
         getUser()
     }"/>
     <div class="profile__place">
@@ -15,6 +15,7 @@ import Profile from '../components/Profile.vue'
 import Browser from '../components/Browser.vue'
 
 import axios from 'axios'
+import router from '../router'
 
 export default {
   name: 'Result',
@@ -33,24 +34,24 @@ export default {
         sort:'created: asc'
       },
       user: [],
-      userLogin: localStorage.getItem('username'),
-      userStorage:'',
-      repos: [],
-      userInput: '',
-      userInputValidator: '',
+      placeholder: localStorage.getItem('username'),
       col: false,
       row: true,
-      loaded: true
-
     }
   },
   mounted(){
       this.getUser()
 
   },
+  watch: {
+    placeholder(){
+      this.getUser()
+    }
+  },
   methods: {
 
     getUser(){
+      this.placeholder = localStorage.getItem('username')
       const { url, client_id, client_secret, count, sort } = this.github 
 
       axios.get(
@@ -58,14 +59,14 @@ export default {
       ).then(({data})=> {
         this.user = data
         localStorage.setItem('reposAmount', data.public_repos)
+        localStorage.setItem('userFound', '')
         })
         .catch(e => {
-        this.userInputValidator = "Nenhum usuário foi encontrado!"
-
-        this.loaded = false
-        localStorage.clear
+        localStorage.setItem('userFound', 'Este usuário não foi encontrado!')
+        router.push('/')
         })
       },
+
     }
   }
 </script>

@@ -9,7 +9,7 @@
           <span>Search</span>
         </div>
        <div class="input__container">
-        <input v-model="userInput" type="text" v-bind:placeholder="userStorage">
+        <input type="text" v-bind:placeholder="inputLabel" v-model="userInput">
         <a href="/result" v-on:click.prevent="update" class="button-search"> 
 
           <img src="../assets/search.png" alt="">
@@ -31,7 +31,8 @@ import axios from 'axios'
 export default {
   props:[
     'row',
-    'col'
+    'col',
+    'inputLabel',
   ],
   name: 'Browser',
   components:{
@@ -48,10 +49,12 @@ export default {
       isCol: col
     }
   },
+
   methods: {
     update: function(){
       this.setUser(this.userInput)
       this.$emit('update')
+      this.userInput = ''
       router.push('result')
     },
 
@@ -62,6 +65,7 @@ export default {
     },
     setUser(userLogin){
         localStorage.setItem('username', userLogin)
+        this.userInput = ''
       }
     }
   }
@@ -82,7 +86,7 @@ body a, * a {
   color: unset;
 }
 
-body input, * input {
+input {
   width: 600px;
   height: 100%;
   background: #FFFFFF;
@@ -104,14 +108,14 @@ body{
 
   min-height: 100vh;
 }
-body .input__container, * .input__container {
+.input__container {
   display: flex;
-  width: 700px;
+  max-width: 700px;
   height: 50px;
-
+  margin: 0 60px;
 }
 
-body .input__container .button-search, * .input__container .button-search {
+.input__container .button-search {
 
   border: none;
   border-bottom: 2px solid #000;
@@ -171,7 +175,7 @@ body .input__container .button-search, * .input__container .button-search {
 
   display: flex;
   width: 100vw;
-
+  flex-wrap: wrap;
   padding:  20px;
       -ms-flex-direction: row;
           flex-direction: row;
@@ -224,5 +228,10 @@ body .input__container .button-search, * .input__container .button-search {
 }
 h2{
   text-align: center;
+}
+@media screen and (max-width: 680px){
+  input {
+  width: auto;
+  }
 }
 </style>

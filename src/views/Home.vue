@@ -1,5 +1,8 @@
 <template>
-  <Browser :row="row" :col="col" />
+  <div class="container">
+    <Browser :row="row" :col="col" :inputLabel="placeholder"/>
+    <h3>{{ userFound }}</h3>
+  </div>
 </template>
 
 <script>
@@ -14,6 +17,13 @@ export default {
     return {
       col: true,
       row: false,
+      placeholder: '',
+      userFound: localStorage.getItem('userFound')
+    }
+  },
+  mounted(){
+    if(this.userFound != ''){
+    localStorage.setItem('userFound', '')
     }
   }
 }
@@ -36,10 +46,18 @@ export default {
     0% { opacity: 0; }
     100% { opacity: 1; }
     }
-
+    .container{
+      max-width: 700px;
+      margin: 0 auto;
+    }
 
     body,html,*{
       animation: fadeIn 1s;
       transition: ease;
+    }
+    h3{
+      font-size: 24px;
+      font-weight: 400;
+      margin-top: 30px;
     }
 </style>

@@ -25,6 +25,7 @@ export default {
   data(){
     return {
       user: 'user',
+      updatedUser: this.user,
       repos: [],
       allStars: [],
       sumStars: 0
@@ -32,6 +33,14 @@ export default {
   },
   mounted(){
     this.getRepos()
+    this.updatedUser = this.user
+  },
+
+  watch: {
+    user(){
+      this.getRepos()
+    this.updatedUser = this.user
+    }
   },
 
     methods: {
@@ -40,7 +49,7 @@ export default {
     const { url, client_id, client_secret, count, sort } = this.github 
 
       axios.get(
-      `${url}/${localStorage.getItem('username')}/repos?per_page=${localStorage.getItem('reposAmount')}`
+      `${url}/${this.user.login}/repos?per_page=${this.user.public_repos}`
       ).then(({data})=> {
         this.repos = data.sort(function(a, b){
             return b.stargazers_count - a.stargazers_count
@@ -74,8 +83,9 @@ export default {
 <style scoped>
 .profile__container{
   display: flex;
+  flex-wrap: wrap;
   width: 100vw;
-  justify-content: start;
+  justify-content: center;
   padding: 0 20px;
 }
 </style>

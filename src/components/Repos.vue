@@ -32,6 +32,10 @@ p{
 
 }
 .repo-list__container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 900px;
   padding: 0 20px;
 }
 .repo-list{
