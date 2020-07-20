@@ -22,7 +22,10 @@ export default {
     }
   },
   watch: {
-
+    userFound(){
+        router.push('/')
+      
+    }
   },
   mounted(){
     if(this.userFound != ''){
@@ -59,7 +62,8 @@ export default {
       transition: ease;
     }
     h3{
-      font-size: 24px;
+      text-align: center;
+      font-size: 18px;
       font-weight: 400;
       margin-top: 30px;
     }

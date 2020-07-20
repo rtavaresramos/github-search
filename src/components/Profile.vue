@@ -24,7 +24,7 @@ export default {
   },
   data(){
     return {
-      user: 'user',
+      // user: 'user',
       repos: [],
       allStars: [],
       sumStars: 0

@@ -52,12 +52,11 @@ export default {
 
   methods: {
     update: function(){
-
       this.setUser(this.userInput)
       this.$emit('update')
       this.userInput = ''
       router.push('result')
-      
+
     },
 
     handleEnter(e){
@@ -66,15 +65,12 @@ export default {
       }    
     },
     setUser(userLogin){
-      if(userLogin != undefined && userLogin != null){
+      if(userLogin == undefined){
+        userLogin = ''
+      }
         localStorage.setItem('username', userLogin)
         this.userInput = ''
         router.push('result')
-
-      }else{
-        localStorage.setItem('userFound', 'O preenchimento do campo é obrigatório')
-        router.push('/')
-        }
       }
     }
   }

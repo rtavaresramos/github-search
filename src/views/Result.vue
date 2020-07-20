@@ -53,6 +53,7 @@ export default {
     getUser(){
       this.placeholder = localStorage.getItem('username')
       const { url, client_id, client_secret, count, sort } = this.github 
+        if(localStorage.getItem('username') != undefined){
 
       axios.get(
       `${url}/${localStorage.getItem('username')}?cliente_id=${client_id}&client_secret=${client_secret}`
@@ -65,6 +66,7 @@ export default {
         localStorage.setItem('userFound', 'Este usuário não foi encontrado!')
         router.push('/')
         })
+        }
       },
 
     }
