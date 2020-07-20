@@ -41,4 +41,8 @@ p{
 .repo-list{
   margin: 10px
 }
+
+.icon-item{
+  display: flex;
+}
 </style>
