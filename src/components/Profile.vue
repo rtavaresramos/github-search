@@ -25,21 +25,14 @@ export default {
   data(){
     return {
       user: 'user',
-      updatedUser: this.user,
       repos: [],
       allStars: [],
       sumStars: 0
     }
   },
-  mounted(){
-    this.getRepos()
-    this.updatedUser = this.user
-  },
-
   watch: {
     user(){
       this.getRepos()
-    this.updatedUser = this.user
     }
   },
 
@@ -83,9 +76,19 @@ export default {
 <style scoped>
 .profile__container{
   display: flex;
+  flex-wrap: nowrap;
+  width: 100vw;
+  justify-content: flex-start;
+  padding: 0 20px;
+}
+
+@media screen and (max-width: 680px){
+  .profile__container{
+  display: flex;
   flex-wrap: wrap;
   width: 100vw;
   justify-content: center;
   padding: 0 20px;
+}
 }
 </style>

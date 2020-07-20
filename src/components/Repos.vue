@@ -34,7 +34,7 @@ p{
 .repo-list__container{
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   max-width: 900px;
   padding: 0 20px;
 }

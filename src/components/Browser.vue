@@ -4,13 +4,13 @@
     <div class="search__container">
       <div class="form__container" v-bind:class="{'column-direction' : col,
        'row-direction' : row }">
-        <div class="form__content">
+        <router-link to="/" class="form__content">
           <h1>Github </h1>
           <span>Search</span>
-        </div>
+        </router-link>
        <div class="input__container">
         <input type="text" v-bind:placeholder="inputLabel" v-model="userInput">
-        <a href="/result" v-on:click.prevent="update" class="button-search"> 
+        <a href="#" v-on:click.prevent="update" class="button-search"> 
 
           <img src="../assets/search.png" alt="">
 
@@ -52,10 +52,12 @@ export default {
 
   methods: {
     update: function(){
+
       this.setUser(this.userInput)
       this.$emit('update')
       this.userInput = ''
       router.push('result')
+      
     },
 
     handleEnter(e){
@@ -64,8 +66,15 @@ export default {
       }    
     },
     setUser(userLogin){
+      if(userLogin != undefined && userLogin != null){
         localStorage.setItem('username', userLogin)
         this.userInput = ''
+        router.push('result')
+
+      }else{
+        localStorage.setItem('userFound', 'O preenchimento do campo é obrigatório')
+        router.push('/')
+        }
       }
     }
   }
@@ -73,8 +82,10 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 body, * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Rubik', sans-serif;
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
@@ -165,8 +176,6 @@ body{
   display: -ms-flexbox;
   justify-content: center;
   display: none;
-  transition: 2s ease;
-  opacity: 0;
 
 
 }
@@ -181,8 +190,6 @@ body{
           flex-direction: row;
           justify-content: space-between;
           align-items: flex-end;
-          opacity: 1;
-
 }
 .column-direction{
   height:120px;
@@ -196,8 +203,6 @@ body{
       -ms-flex-align: center;
       align-items: center;
           justify-content: space-between;
-          opacity: 1;
-  transition: 2s ease;
 }
 
 .form__content {
@@ -210,13 +215,13 @@ body{
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-
   margin: 10 40px;
 
 }
 
-.form__content h1 {
-  font-weight: 600;
+.form__content h1{
+  font-family: 'Roboto Mono', sans-serif;
+  font-weight: 700;
   font-size: 34px;
 }
 

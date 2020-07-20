@@ -21,9 +21,12 @@ export default {
       userFound: localStorage.getItem('userFound')
     }
   },
+  watch: {
+
+  },
   mounted(){
     if(this.userFound != ''){
-    localStorage.setItem('userFound', '')
+    localStorage.clear()
     }
   }
 }
