@@ -1,7 +1,7 @@
 <template>
   <div class="profile__container">
       <UserInfo :user="user" :star="sumStars" />
-      <Repos :repo="repos" />
+      <Repos :repo="repos" :user="user" />
   </div>
 </template>
 

@@ -1,7 +1,9 @@
 <template>
   <div class="repo-list__container">
     <div class="repo-list" v-for="repo in repo" :key="repo.id">
-          <h2>{{repo.name}}</h2>
+          <a :href="`https://github.com/${user.login}/${repo.name}`" target="_blank">
+            <h2>{{repo.name}}</h2>
+          </a>
           <p>{{repo.description}}</p>
           <div class="icon-item">
             <img src="../assets/star.png" alt="">
@@ -15,9 +17,15 @@
 <script>
 export default {
   props:[
-    'repo'
+    'repo',
+    'user'
   ],
   name: 'Repos',
+  data(){
+    return {
+      repo_url: `https://github.com/${this.user.login}/${this.repo.name}`
+    }
+  }
 
 }
 </script>
@@ -25,12 +33,11 @@ export default {
 h2{
   text-align: left;
   font-weight: 300;
+  margin-bottom: 10px;
 }
 
 p{
-  margin: 0 20px;
   color:#757575;
-
 }
 .repo-list__container{
   display: flex;
@@ -46,5 +53,9 @@ p{
 .icon-item{
   display: flex;
   align-items: center;
+  height: 30px;
+}
+.icon-item p{
+   margin: 0 10px;
 }
 </style>

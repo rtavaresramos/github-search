@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="container">
     <Browser :row="row" :col="col" :inputLabel="placeholder" v-on:update="()=>{
         getUser()
     }"/>
