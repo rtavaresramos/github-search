@@ -28,7 +28,7 @@ h2{
 }
 
 p{
-  margin: 20px;
+  margin: 0 20px;
   color:#757575;
 
 }
