@@ -28,6 +28,7 @@ h2{
 }
 
 p{
+  margin: 20px;
   color:#757575;
 
 }
@@ -44,5 +45,6 @@ p{
 
 .icon-item{
   display: flex;
+  align-items: center;
 }
 </style>
